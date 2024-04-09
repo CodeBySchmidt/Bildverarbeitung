@@ -1,3 +1,6 @@
 import cv2 as cv
 
-cv.imread()
+img = cv.imread("Utils/LennaCol.png", cv.IMREAD_GRAYSCALE)
+cv.imshow("Testbild", img)
+cv.waitKey(0)
+cv.imwrite("Utils/LennaCol2.png", img)
