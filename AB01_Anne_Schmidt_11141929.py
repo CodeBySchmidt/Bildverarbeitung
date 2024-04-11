@@ -7,8 +7,9 @@ import numpy as np
 print("Hello World!")
 
 # Aufgabe 2
-for i  in range(100):
-    print(i+1)
+for i in range(100):
+    print(i + 1)
+
 
 # Aufgabe 3
 def ist_primzahl(zahl):
@@ -34,6 +35,7 @@ n = int(input("Geben Sie die Anzahl der ersten Primzahlen ein: "))
 primzahlen = erste_n_primzahlen(n)
 print("Die ersten", n, "Primzahlen sind:", primzahlen)
 
+
 # Aufgabe 4
 img = cv2.imread("Utils\LennaCol.png", cv2.IMREAD_GRAYSCALE)
 cv2.imshow("Bild", img)
@@ -42,12 +44,12 @@ cv2.waitKey(0)
 
 
 # Aufgabe 5
-def invertimage(img):
-    height, width = img.shape
+def invertimage(imgInput):
+    height, width = imgInput.shape
     canvas = np.zeros((height, width), dtype=np.uint8)
     for y in range(0, height):
         for x in range(0, width):
-            pixelvalue = img[y, x]
+            pixelvalue = imgInput[y, x]
             canvas[y, x] = 255 - pixelvalue
     return canvas
 
