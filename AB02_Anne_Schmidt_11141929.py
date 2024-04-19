@@ -18,9 +18,11 @@ def histogram(img):
     return hist
 
 
-def kumuliertes_histogramm(histogramm):
+def kumulatives_histogramm(histogramm):
     kumulatives_histogramm = np.zeros(len(histogramm))
-    for i in range(len(histogramm)):
+    kumulatives_histogramm[0] = histogramm[0]  # Initialisierung des ersten Elements
+
+    for i in range(1, len(histogramm)):
         kumulatives_histogramm[i] = kumulatives_histogramm[i - 1] + histogramm[i]
 
     return kumulatives_histogramm
@@ -39,21 +41,19 @@ def lineare_kontrastspreizung(img, t0, t1):
 
 def linear_histogramm_ausgleich(histogramm):
     total_pixels = np.sum(histogramm)
-    cumulative_histogram = np.cumsum(histogramm) / total_pixels * 255
-    linear_ausgleich = np.zeros_like(histogramm, dtype=np.uint8)
-
-    for i in range(len(histogramm)):
-        linear_ausgleich[i] = np.round(cumulative_histogram[i])
-
-    # Histogramme plotten
-    plt.bar(range(256), linear_ausgleich, width=2, color='black')
-    plt.title('Histogramm nach linearem Ausgleich')
-    plt.show()
+    p_a = kumulatives_histogramm(histogramm) / total_pixels
+    k = 256
+    linear_ausgleich = (p_a * (k - 1)).astype(np.uint8)
 
     return linear_ausgleich
 
 
 def binarisierung(img, threshold):
+
+    # bin_img = np.copy(img)
+    # bin_img[bin_img < threshold] = 0
+    # bin_img[bin_img > threshold] = 255
+
     height, width = img.shape[:2]
     bin_img = np.zeros((height, width), dtype=np.uint8)
 
@@ -78,11 +78,17 @@ hist = histogram(input_img)
 # Histogramm plotten
 hist_to_plotter(hist, "Histogramm: LennaCol")
 
-kumuliertes_hist = kumuliertes_histogramm(hist)
+kumuliertes_hist = kumulatives_histogramm(hist)
 hist_to_plotter(kumuliertes_hist, "Kumuliertes Histogramm: LennaCol")
-
+#
 kont = lineare_kontrastspreizung(input_img, 50, 225)
 hist_to_plotter(kont[1], "Lineare Konstarstspreizung Histogramm: LennaCol")
+
+# Anwenden des linearen Histogrammausgleichs
+linear_ausgleich = linear_histogramm_ausgleich(kumuliertes_hist)
+
+# Histogramm des ausbalancierten Bildes plotten
+hist_to_plotter(linear_ausgleich, "Histogramm nach linearem Ausgleich: LennaCol")
 
 
 img2 = binarisierung(input_img, 143)
