@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Read input image
-input_img = cv2.imread("Utils/LennaCol.png")
+input_img = cv2.imread("Utils/test.jpg")
 
 
 # Function to compute histogram of grayscale image
@@ -121,7 +121,6 @@ plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
 plt.imshow(otsu_img, cmap='gray')
 plt.show()
 
-
 median_value = calculate_median(input_img)
 median_img = binarization(input_img, median_value)
 
@@ -139,15 +138,8 @@ plt.title("Filtered Image with Kernel Size (M: " + str(m) + " & N: " + str(n) + 
 plt.imshow(filtered_img)
 plt.show()
 
-input_img = cv2.imread("Utils/LennaCol.png")
+input_img = cv2.imread("Utils/test.jpg")
 input_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)
 plt.title("Original Image")
 plt.imshow(input_img)
 plt.show()
-
-# Display input and binary images using OpenCV (comment out if not needed)
-# cv2.imshow("Input Img", input_img)
-# cv2.imshow("Binary Img", otsu_img)
-# cv2.imshow("Median Img", median_img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()

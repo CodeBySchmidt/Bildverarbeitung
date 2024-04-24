@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-input_img = cv2.imread('Utils/LennaCol.png', cv2.IMREAD_GRAYSCALE)
+input_img = cv2.imread('Utils/test.jpg')
 
 
 def histogram(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     hist = np.zeros(256)
     height, width = img.shape[:2]
 
@@ -76,7 +77,7 @@ def hist_to_plotter(hist, str):
 
 hist = histogram(input_img)
 # Histogramm plotten
-hist_to_plotter(hist, "Histogramm: LennaCol")
+hist_to_plotter(hist, "Histogram: Original Image")
 
 kumuliertes_hist = kumulatives_histogramm(hist)
 hist_to_plotter(kumuliertes_hist, "Kumuliertes Histogramm: LennaCol")
