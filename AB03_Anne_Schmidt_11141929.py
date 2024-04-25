@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Read input image
-input_img = cv2.imread("Utils/test.jpg")
+# input_img = cv2.imread("Utils/test.jpg")
 
 
 # Function to compute histogram of grayscale image
@@ -104,30 +104,32 @@ def apply_median_filter(img, m, n):
             # Compute median value of kernel region and assign to filtered image
             filtered_image[y - padding_size, x - padding_size] = np.median(kernel_region)
 
-    return filtered_image
+    return filtered_image, padded_image
 
 
-# Compute histogram of input image
-hist = histogram(input_img)
+# # Compute histogram of input image
+# hist = histogram(input_img)
+#
+# # Apply Otsu's thresholding to find optimal threshold
+# optimal_threshold = otsu_thresholding(hist)
+#
+# # Binarize image using the optimal threshold
+# otsu_img = binarization(input_img, optimal_threshold)
+#
+# # Display binary image using otsu threshold
+# plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
+# plt.imshow(otsu_img, cmap='gray')
+# plt.show()
+#
+# median_value = calculate_median(input_img)
+# median_img = binarization(input_img, median_value)
+#
+# # Display binary image using median threshold
+# plt.title("Binary Image with Median Threshold: " + str(median_value))
+# plt.imshow(median_img, cmap='gray')
+# plt.show()
 
-# Apply Otsu's thresholding to find optimal threshold
-optimal_threshold = otsu_thresholding(hist)
-
-# Binarize image using the optimal threshold
-otsu_img = binarization(input_img, optimal_threshold)
-
-# Display binary image using otsu threshold
-plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
-plt.imshow(otsu_img, cmap='gray')
-plt.show()
-
-median_value = calculate_median(input_img)
-median_img = binarization(input_img, median_value)
-
-# Display binary image using median threshold
-plt.title("Binary Image with Median Threshold: " + str(median_value))
-plt.imshow(median_img, cmap='gray')
-plt.show()
+input_img = cv2.imread("Utils/LennaCol.png", cv2.IMREAD_GRAYSCALE)
 
 m = 3
 n = 3
@@ -135,11 +137,13 @@ filtered_img = apply_median_filter(input_img, m, n)
 
 # Display binary image using median threshold
 plt.title("Filtered Image with Kernel Size (M: " + str(m) + " & N: " + str(n) + ")")
-plt.imshow(filtered_img)
+plt.imshow(filtered_img[0], cmap="gray")
 plt.show()
 
-input_img = cv2.imread("Utils/test.jpg")
-input_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)
+plt.title("Padded Image")
+plt.imshow(filtered_img[1], cmap="gray")
+plt.show()
+
 plt.title("Original Image")
-plt.imshow(input_img)
+plt.imshow(input_img, cmap="gray")
 plt.show()
