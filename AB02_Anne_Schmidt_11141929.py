@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-input_img = cv2.imread('Utils/LennaCol.png', cv2.IMREAD_GRAYSCALE)
+input_img = cv2.imread('Utils/LennaCol.png')
 
 
 def histogram(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     hist = np.zeros(256)
     height, width = img.shape[:2]
 
@@ -16,6 +17,14 @@ def histogram(img):
             hist[pixel_value] = hist[pixel_value] + 1
 
     return hist
+
+
+def normalize_histogram(img, hist):
+    height, width = img.shape[:2]
+    total_pixels = height * width
+    hist_normalized = hist / total_pixels
+
+    return hist_normalized
 
 
 def kumulatives_histogramm(histogramm):
@@ -49,7 +58,6 @@ def linear_histogramm_ausgleich(histogramm):
 
 
 def binarisierung(img, threshold):
-
     # bin_img = np.copy(img)
     # bin_img[bin_img < threshold] = 0
     # bin_img[bin_img > threshold] = 255
@@ -76,29 +84,31 @@ def hist_to_plotter(hist, str):
 
 hist = histogram(input_img)
 # Histogramm plotten
-hist_to_plotter(hist, "Histogramm: LennaCol")
+hist_to_plotter(hist, "Histogram: Original Image")
 
-kumuliertes_hist = kumulatives_histogramm(hist)
-hist_to_plotter(kumuliertes_hist, "Kumuliertes Histogramm: LennaCol")
+normalized_hist = normalize_histogram(input_img, hist)
+hist_to_plotter(normalized_hist, "Normalized Histogram: Original Image")
+
+# kumuliertes_hist = kumulatives_histogramm(hist)
+# hist_to_plotter(kumuliertes_hist, "Kumuliertes Histogramm: LennaCol")
+# #
+# kont = lineare_kontrastspreizung(input_img, 50, 225)
+# hist_to_plotter(kont[1], "Lineare Konstarstspreizung Histogramm: LennaCol")
 #
-kont = lineare_kontrastspreizung(input_img, 50, 225)
-hist_to_plotter(kont[1], "Lineare Konstarstspreizung Histogramm: LennaCol")
+# # Anwenden des linearen Histogrammausgleichs
+# linear_ausgleich = linear_histogramm_ausgleich(kumuliertes_hist)
+#
+# # Histogramm des ausbalancierten Bildes plotten
+# hist_to_plotter(linear_ausgleich, "Histogramm nach linearem Ausgleich: LennaCol")
 
-# Anwenden des linearen Histogrammausgleichs
-linear_ausgleich = linear_histogramm_ausgleich(kumuliertes_hist)
-
-# Histogramm des ausbalancierten Bildes plotten
-hist_to_plotter(linear_ausgleich, "Histogramm nach linearem Ausgleich: LennaCol")
-
-
-img2 = binarisierung(input_img, 143)
-cv2.imshow("Original Bild", input_img)
-cv2.imshow("Kontrastspreizung Bild", kont[0])
-cv2.imshow("Binär Bild", img2)
-
-cv2.imwrite("Original Bild.jpg", input_img)
-cv2.imwrite("Kontrastspreizung Bild.jpg", kont[0])
-cv2.imwrite("Binary Bild.jpg", img2)
+# img2 = binarisierung(input_img, 143)
+# cv2.imshow("Original Bild", input_img)
+# cv2.imshow("Kontrastspreizung Bild", kont[0])
+# cv2.imshow("Binär Bild", img2)
+#
+# cv2.imwrite("Original Bild.jpg", input_img)
+# cv2.imwrite("Kontrastspreizung Bild.jpg", kont[0])
+# cv2.imwrite("Binary Bild.jpg", img2)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
