@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32a421da-0766-4d57-85d8-486d0b1be8a4" name="Changes" comment="AB02 - Fertig">
-      <change afterPath="$PROJECT_DIR$/AB04_Anne_Schmidt_11141929.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/MenschAergere02.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/SetGameNew.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/bookPage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Image_region.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/Image dilated.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/Original.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/Otsu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/SetExample1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/dilated.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/eroded.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eroded.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/original.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/otsu.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_04_2024_16_01__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_04_2024_16_01__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_04_2024_16_04__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_04_2024_16_04__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AB04_Anne_Schmidt_11141929.py" beforeDir="false" afterPath="$PROJECT_DIR$/AB04_Anne_Schmidt_11141929.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +42,7 @@
   }
 }</component>
   <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="b0a4921d-52c5-4e63-9e69-962a8919525a" />
+    <option name="defaultAccountId" value="64556d7e-f9d9-4657-bd39-e7b49138210d" />
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -70,7 +75,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/annes/Documents/Studium/Module/4. BV1/Git/Bildverarbeitung/Utils",
+    "last_opened_file_path": "C:/Users/annes/Documents/Studium/BV1/Abgaben",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -87,8 +92,8 @@
       <recent name="C:\Users\annes\Documents\Studium\BV1\Abgaben\Utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\annes\Documents\Studium\Module\4. BV1\Git\Bildverarbeitung" />
       <recent name="C:\Users\annes\Documents\Studium\BV1\Abgaben\Utils" />
+      <recent name="D:\annes\Documents\Studium\Module\4. BV1\Git\Bildverarbeitung" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -131,6 +136,8 @@
       <workItem from="1713967179953" duration="8379000" />
       <workItem from="1714074764733" duration="76000" />
       <workItem from="1714074864172" duration="14000" />
+      <workItem from="1714414704562" duration="2592000" />
+      <workItem from="1714478367872" duration="14027000" />
     </task>
     <task id="LOCAL-00001" summary="AB01">
       <option name="closed" value="true" />
@@ -266,6 +273,6 @@
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB02_Anne_Schmidt_11141929.coverage" NAME="AB02_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1713980866252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB01_Anne_Schmidt_11141929.coverage" NAME="AB01_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1712699352856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB03_Anne_Schmidt_11141929.coverage" NAME="AB03_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714055733552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Bildverarbeitung$AB04_Anne_Schmidt_11141929.coverage" NAME="AB04_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714263772347" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Bildverarbeitung$AB04_Anne_Schmidt_11141929.coverage" NAME="AB04_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714496842825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

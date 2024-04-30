@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-
+from queue import Queue
+import time
 
 # Read input image
-input_img = cv2.imread("Utils/SetGameNew.jpg")
+input_img = cv2.imread("Utils/SetExample1.png")
 
 
 # Function to compute histogram of grayscale image
@@ -82,24 +83,107 @@ otsu_img = binarization(input_img, optimal_threshold)
 
 
 # Creating kernel
-kernel = np.ones((5, 5), np.uint8)
+kernel = np.ones((3, 3), np.uint8)
 
 otsu_img_eroded = cv2.erode(otsu_img, kernel, iterations=4)
-
 otsu_img_dilated = cv2.dilate(otsu_img_eroded, kernel, iterations=4)
 
-
 # Display binary image using otsu threshold
-# plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
-# plt.imshow(otsu_img, cmap='gray')
-# plt.show()
+plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
+plt.imshow(otsu_img, cmap='gray')
+plt.show()
 
-# Display binary image using otsu threshold
-plt.title("Eroded Image with Otsu Threshold: " + str(optimal_threshold))
+# Display eroded image
+plt.title("Eroded Image with 4 Iterations")
 plt.imshow(otsu_img_eroded, cmap='gray')
 plt.show()
 
-# Display binary image using otsu threshold
-plt.title("Dilated Image with Otsu Threshold: " + str(optimal_threshold))
+# Display dilated image
+plt.title("Dilated Image with 4 Iterations")
 plt.imshow(otsu_img_dilated, cmap='gray')
 plt.show()
+
+
+# Aufgabe 3
+def flood_fill_dfs(image, x, y, label):
+    height, width = image.shape[:2]
+    stack = []
+    stack.append((x, y))
+    fill_color = label_colors[label]
+    while stack:
+        x, y = stack.pop()
+        if 0 <= x < height and 0 <= y < width and np.all(image[x][y] == 255):
+            image[x][y] = fill_color
+            stack.append((x + 1, y))
+            stack.append((x, y + 1))
+            stack.append((x, y - 1))
+            stack.append((x - 1, y))
+
+
+def flood_fill_bfs(image, x, y, label):
+    height, width = image.shape[:2]
+    queue = Queue()
+    queue.put((x, y))
+    fill_color = label_colors[label]
+    while not queue.empty():
+        x, y = queue.get()
+        if 0 <= x < height and 0 <= y < width and np.all(image[x][y] == 255):
+            image[x][y] = fill_color
+            queue.put((x + 1, y))
+            queue.put((x, y + 1))
+            queue.put((x, y - 1))
+            queue.put((x - 1, y))
+
+
+def flood_fill_recursive(image, x, y, label):
+    height, width = image.shape[:2]
+    fill_color = label_colors[label]
+    # old_color = image[x, y]
+
+    if not (0 <= x < height and 0 <= y < width) or not np.all(image[x][y] == 255):
+        return
+
+    image[x, y] = fill_color
+
+    flood_fill_recursive(image, x + 1, y, label)
+    flood_fill_recursive(image, x - 1, y, label)
+    flood_fill_recursive(image, x, y + 1, label)
+    flood_fill_recursive(image, x, y - 1, label)
+
+
+def region_labeling(image):
+    label = 2
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            if np.all(image[x][y] == 255):
+                random_color = (np.random.randint(0, 256), np.random.randint(0, 256), np.random.randint(0, 256))
+                label_colors[label] = random_color
+                # flood_fill_dfs(image, x, y, label)
+                # flood_fill_bfs(image, x, y, label)
+                flood_fill_recursive(image, x, y, label)
+                label += 1
+
+
+# binary test img convertion to RGB - Color channels are needed fpr the colorization labeling
+region_img = cv2.cvtColor(otsu_img_dilated, cv2.COLOR_GRAY2RGB)
+
+# dynamic color labels list
+label_colors = {}
+
+# start and stop time for the region_labeling method
+start_time = time.time()
+region_labeling(region_img)
+end_time = time.time()
+
+# calculation for the taken time
+execution_time = end_time - start_time
+print("Execution time: ", execution_time, "seconds")
+
+# Print the labels and its colors
+print(label_colors)
+
+# display img
+plt.title("Image Region Label")
+plt.imshow(region_img, cmap="gray")
+plt.show()
+
