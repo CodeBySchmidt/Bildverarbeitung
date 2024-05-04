@@ -28,6 +28,8 @@ def histogram(img):
     return hist
 
 
+
+
 # Function to perform Otsu's thresholding
 def otsu_thresholding(histogram):
     K = len(histogram)
