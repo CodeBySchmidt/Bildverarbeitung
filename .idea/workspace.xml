@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32a421da-0766-4d57-85d8-486d0b1be8a4" name="Changes" comment="AB02 - Fertig">
-      <change afterPath="$PROJECT_DIR$/Image_region.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/Image dilated.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/Original.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/Otsu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/SetExample1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/dilated.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/eroded.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eroded.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/original.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/otsu.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="32a421da-0766-4d57-85d8-486d0b1be8a4" name="Changes" comment="AB04: &#10;- Aufgabe 1: fertig&#10;- Aufgabe 2: fertig&#10;- Aufgabe 3: stack und queue implementiert, nur rekursiv nicht richtig">
+      <change afterPath="$PROJECT_DIR$/IMG_1972.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AB04_Anne_Schmidt_11141929.py" beforeDir="false" afterPath="$PROJECT_DIR$/AB04_Anne_Schmidt_11141929.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dilated.png" beforeDir="false" afterPath="$PROJECT_DIR$/dilated.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eroded.png" beforeDir="false" afterPath="$PROJECT_DIR$/eroded.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/otsu.png" beforeDir="false" afterPath="$PROJECT_DIR$/otsu.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +80,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\annes\Documents\Studium\BV1\Abgaben" />
       <recent name="D:\annes\Documents\Studium\Module\4. BV1\Git\Bildverarbeitung\Utils" />
       <recent name="D:\annes\Documents\Studium\Module\4. BV1\Git\Bildverarbeitung" />
       <recent name="C:\Users\annes\Documents\Studium\BV1\Abgaben\Utils" />
@@ -137,7 +131,13 @@
       <workItem from="1714074764733" duration="76000" />
       <workItem from="1714074864172" duration="14000" />
       <workItem from="1714414704562" duration="2592000" />
-      <workItem from="1714478367872" duration="14027000" />
+      <workItem from="1714478367872" duration="19667000" />
+      <workItem from="1714573553322" duration="8519000" />
+      <workItem from="1714590957204" duration="4738000" />
+      <workItem from="1714657272193" duration="8275000" />
+      <workItem from="1714666901986" duration="217000" />
+      <workItem from="1714675911802" duration="1510000" />
+      <workItem from="1714783341520" duration="2228000" />
     </task>
     <task id="LOCAL-00001" summary="AB01">
       <option name="closed" value="true" />
@@ -243,7 +243,23 @@
       <option name="project" value="LOCAL" />
       <updated>1713982412462</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="AB04:">
+      <option name="closed" value="true" />
+      <created>1714505238802</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714505238802</updated>
+    </task>
+    <task id="LOCAL-00015" summary="AB04: &#10;- Aufgabe 1: fertig&#10;- Aufgabe 2: fertig&#10;- Aufgabe 3: stack und queue implementiert, nur rekursiv nicht richtig">
+      <option name="closed" value="true" />
+      <created>1714505327643</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1714505327643</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,12 +283,14 @@
     <MESSAGE value="AB02 - Angefangen" />
     <MESSAGE value="AB02 - Fast fertig, ur Aufgabe 4 fehlt" />
     <MESSAGE value="AB03 - Fertig" />
-    <option name="LAST_COMMIT_MESSAGE" value="AB03 - Fertig" />
+    <MESSAGE value="AB04:" />
+    <MESSAGE value="AB04: &#10;- Aufgabe 1: fertig&#10;- Aufgabe 2: fertig&#10;- Aufgabe 3: stack und queue implementiert, nur rekursiv nicht richtig" />
+    <option name="LAST_COMMIT_MESSAGE" value="AB04: &#10;- Aufgabe 1: fertig&#10;- Aufgabe 2: fertig&#10;- Aufgabe 3: stack und queue implementiert, nur rekursiv nicht richtig" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB02_Anne_Schmidt_11141929.coverage" NAME="AB02_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1713980866252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB01_Anne_Schmidt_11141929.coverage" NAME="AB01_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1712699352856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Bildverarbeitung$AB03_Anne_Schmidt_11141929.coverage" NAME="AB03_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714055733552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Bildverarbeitung$AB04_Anne_Schmidt_11141929.coverage" NAME="AB04_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714496842825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Bildverarbeitung$AB04_Anne_Schmidt_11141929.coverage" NAME="AB04_Anne_Schmidt_11141929 Coverage Results" MODIFIED="1714785498935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

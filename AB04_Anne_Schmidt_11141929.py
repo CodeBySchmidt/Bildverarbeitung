@@ -3,10 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from queue import Queue
 import time
+import random
 
 # Read input image
-input_img = cv2.imread("Utils/SetExample1.png")
+img = cv2.imread("IMG_1972.jpg")
+input_img = cv2.resize(img, (640, 480))
 
+plt.title("Original Image")
+plt.imshow(input_img)
+plt.show()
 
 # Function to compute histogram of grayscale image
 def histogram(img):
@@ -63,13 +68,109 @@ def binarization(img, threshold):
     height, width = img.shape[:2]
     bin_img = np.zeros((height, width), dtype=np.uint8)
 
+    for i in range(height):
+        for j in range(width):
+            if img[i, j] < threshold:
+                bin_img[i, j] = 0
+            else:
+                bin_img[i, j] = 1
+    return bin_img
+
+
+# Aufgabe 3
+def flood_fill_dfs(image, x, y, label):
+    height, width = image.shape[:2]
+    stack = []
+    stack.append((x, y))
+    while stack:
+        x, y = stack.pop()
+        if 0 <= x < height and 0 <= y < width and image[x][y] == 1:
+            image[x][y] = label
+            stack.append((x + 1, y))
+            stack.append((x, y + 1))
+            stack.append((x, y - 1))
+            stack.append((x - 1, y))
+
+
+def flood_fill_bfs(image, x, y, label):
+    height, width = image.shape[:2]
+    queue = Queue()
+    queue.put((x, y))
+    while not queue.empty():
+        x, y = queue.get()
+        if 0 <= x < height and 0 <= y < width and image[x][y] == 1:
+            image[x][y] = label
+            queue.put((x + 1, y))
+            queue.put((x, y + 1))
+            queue.put((x, y - 1))
+            queue.put((x - 1, y))
+
+
+def region_labeling(image):
+    label = 2
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            if image[x][y] == 1:
+                # flood_fill_dfs(image, x, y, label)
+                flood_fill_bfs(image, x, y, label)
+                label = label + 1
+
+
+def flood_fill_recursive(image, x, y, label):
+    height, width = image.shape[:2]
+
+    if 0 <= x < width and 0 <= y < height and image[x][y] == 1:
+
+        image[x][y] = label
+
+        flood_fill_recursive(image, x + 1, y, label)
+        flood_fill_recursive(image, x - 1, y, label)
+        flood_fill_recursive(image, x, y + 1, label)
+        flood_fill_recursive(image, x, y - 1, label)
+
+    else:
+        return
+
+
+def region_labeling_recursive(image):
+    label = 2
+    height, width = image.shape[:2]
+
     for y in range(height):
         for x in range(width):
-            if img[y, x] < threshold:
-                bin_img[y, x] = 0
-            else:
-                bin_img[y, x] = 255
-    return bin_img
+
+            flood_fill_recursive(image, x, y, label)
+            label += 1
+
+
+def region_coloring(image):
+    # Maximalen Labelwert finden
+    max_label = np.max(image)
+
+    # Zufällige Farben für jeden möglichen Labelwert generieren und in einem Dictionary speichern
+    colors = {}
+    for label in range(1, max_label + 1):
+        colors[label] = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+
+    # Bild für die gefärbte Darstellung initialisieren
+    image_color = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+
+    # Farben entsprechend den Regionen zuweisen
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            label = image[x][y]
+            if label != (0 and 1):
+                image_color[x][y] = colors[label]
+
+    return image_color
+
+
+def scale_picture(img, scale_percent):
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+    return img
 
 
 # Compute histogram of input image
@@ -85,90 +186,12 @@ otsu_img = binarization(input_img, optimal_threshold)
 # Creating kernel
 kernel = np.ones((3, 3), np.uint8)
 
-otsu_img_eroded = cv2.erode(otsu_img, kernel, iterations=4)
-otsu_img_dilated = cv2.dilate(otsu_img_eroded, kernel, iterations=4)
-
-# Display binary image using otsu threshold
-plt.title("Binary Image with Otsu Threshold: " + str(optimal_threshold))
-plt.imshow(otsu_img, cmap='gray')
-plt.show()
-
-# Display eroded image
-plt.title("Eroded Image with 4 Iterations")
-plt.imshow(otsu_img_eroded, cmap='gray')
-plt.show()
-
-# Display dilated image
-plt.title("Dilated Image with 4 Iterations")
-plt.imshow(otsu_img_dilated, cmap='gray')
-plt.show()
+otsu_img_eroded = cv2.erode(otsu_img, kernel, iterations=1)
+otsu_img_dilated = cv2.dilate(otsu_img_eroded, kernel, iterations=1)
 
 
-# Aufgabe 3
-def flood_fill_dfs(image, x, y, label):
-    height, width = image.shape[:2]
-    stack = []
-    stack.append((x, y))
-    fill_color = label_colors[label]
-    while stack:
-        x, y = stack.pop()
-        if 0 <= x < height and 0 <= y < width and np.all(image[x][y] == 255):
-            image[x][y] = fill_color
-            stack.append((x + 1, y))
-            stack.append((x, y + 1))
-            stack.append((x, y - 1))
-            stack.append((x - 1, y))
+region_img = otsu_img_dilated.copy()
 
-
-def flood_fill_bfs(image, x, y, label):
-    height, width = image.shape[:2]
-    queue = Queue()
-    queue.put((x, y))
-    fill_color = label_colors[label]
-    while not queue.empty():
-        x, y = queue.get()
-        if 0 <= x < height and 0 <= y < width and np.all(image[x][y] == 255):
-            image[x][y] = fill_color
-            queue.put((x + 1, y))
-            queue.put((x, y + 1))
-            queue.put((x, y - 1))
-            queue.put((x - 1, y))
-
-
-def flood_fill_recursive(image, x, y, label):
-    height, width = image.shape[:2]
-    fill_color = label_colors[label]
-    # old_color = image[x, y]
-
-    if not (0 <= x < height and 0 <= y < width) or not np.all(image[x][y] == 255):
-        return
-
-    image[x, y] = fill_color
-
-    flood_fill_recursive(image, x + 1, y, label)
-    flood_fill_recursive(image, x - 1, y, label)
-    flood_fill_recursive(image, x, y + 1, label)
-    flood_fill_recursive(image, x, y - 1, label)
-
-
-def region_labeling(image):
-    label = 2
-    for x in range(image.shape[0]):
-        for y in range(image.shape[1]):
-            if np.all(image[x][y] == 255):
-                random_color = (np.random.randint(0, 256), np.random.randint(0, 256), np.random.randint(0, 256))
-                label_colors[label] = random_color
-                # flood_fill_dfs(image, x, y, label)
-                # flood_fill_bfs(image, x, y, label)
-                flood_fill_recursive(image, x, y, label)
-                label += 1
-
-
-# binary test img convertion to RGB - Color channels are needed fpr the colorization labeling
-region_img = cv2.cvtColor(otsu_img_dilated, cv2.COLOR_GRAY2RGB)
-
-# dynamic color labels list
-label_colors = {}
 
 # start and stop time for the region_labeling method
 start_time = time.time()
@@ -177,13 +200,38 @@ end_time = time.time()
 
 # calculation for the taken time
 execution_time = end_time - start_time
-print("Execution time: ", execution_time, "seconds")
+print("Execution time for Region labeling: ", execution_time, "seconds")
 
-# Print the labels and its colors
-print(label_colors)
 
-# display img
-plt.title("Image Region Label")
-plt.imshow(region_img, cmap="gray")
+start_time = time.time()
+img_color = region_coloring(region_img)
+end_time = time.time()
+
+execution_time = end_time - start_time
+print("Execution time for Coloring: ", execution_time, "seconds")
+
+
+# img_scaled = scale_picture(img_color, 30)
+# img_scaled2 = scale_picture(region_img, 30)
+#
+# cv2.imshow("Image Region Label", img_scaled2 * 255)
+# cv2.imshow("Image Region Label Color", img_scaled * 255)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
+plt.title("Binary Image with Otsu Threshold")
+plt.imshow(otsu_img, cmap='gray')
 plt.show()
-
+plt.title("eroded Image with 1 Iterations")
+plt.imshow(otsu_img_eroded, cmap='gray')
+plt.show()
+plt.title("dilated Image with 1 Iterations")
+plt.imshow(otsu_img_dilated, cmap='gray')
+plt.show()
+plt.title("Region labeled Image")
+plt.imshow(region_img, cmap='gray')
+plt.show()
+plt.title("colored Region Image")
+plt.imshow(img_color, cmap="gray")
+plt.show()
