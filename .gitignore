@@ -5,3 +5,6 @@
 .idea/misc.xml
 .idea/Bildverarbeitung.iml
 .idea/misc.xml
+.idea/workspace.xml
+*.iml
+*.xml
