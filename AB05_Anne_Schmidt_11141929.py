@@ -1,12 +1,10 @@
-#  Übungsblatt 05
 import cv2
 import numpy as np
-import random
 
 
 def find_cards(image_path):
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    _, imgBin = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU)
+    _, imgBin = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     contours, _ = cv2.findContours(imgBin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cards = []
@@ -20,9 +18,23 @@ def find_cards(image_path):
 
 
 def count_symbols(card):
-    contours, _ = cv2.findContours(card, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    symbol_count = len(contours)
-    return symbol_count
+    kernel = np.ones((3, 3), np.uint8)
+    card = cv2.erode(card, kernel, iterations=1)
+    card = cv2.dilate(card, kernel, iterations=1)
+
+    contours, contour_hierarchy = cv2.findContours(card, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    symbol_count = 0
+    symbol_areas = []
+
+    for i in range(len(contours)):
+        if contour_hierarchy[0][i][3] == -1:
+            for j in range(len(contour_hierarchy[0])):
+                if contour_hierarchy[0][j][3] == i:
+                    symbol_count += 1
+                    area = cv2.contourArea(contours[j])
+                    symbol_areas.append(area)
+
+    return symbol_count, symbol_areas
 
 
 def determine_pattern_and_shape(card):
@@ -33,21 +45,23 @@ def determine_pattern_and_shape(card):
 
     for contour in contours:
         mask = np.zeros_like(card)
-        cv2.drawContours(mask, [contour], -1, color=255, thickness=1)
+        cv2.drawContours(mask, [contour], -1, color=255, thickness=cv2.FILLED)
         filled_area = np.sum(mask == 255)
-        bounding_rect_area = cv2.contourArea(contour)
-        fill_rate = filled_area / bounding_rect_area
+        contour_area = cv2.contourArea(contour)
+        fill_rate = filled_area / contour_area if contour_area != 0 else 0
+        # print(fill_rate)
 
         # Calculate roundness
         perimeter = cv2.arcLength(contour, closed=True)
         area = cv2.contourArea(contour)
-        roundness = (4 * np.pi * area) / (perimeter ** 2)
+        roundness = (4 * np.pi * area) / (perimeter ** 2) if perimeter != 0 else 0
 
-
-        if fill_rate > 0.6:  # Threshold for filled
-            patterns.append("filled")
-        else:
+        if fill_rate > 1.0168:  # Threshold for outline
+            patterns.append("outline")
+        elif 1.0155 < fill_rate <= 1.01679:  # Threshold for striped
             patterns.append("striped")
+        else:  # Threshold for filled
+            patterns.append("filled")
 
         huMoments = cv2.HuMoments(cv2.moments(contour)).flatten()
         shapes.append(huMoments)
@@ -56,27 +70,21 @@ def determine_pattern_and_shape(card):
 
 
 def classify_shapes(huMoments, roundness):
-
     roundness_threshold_low = 0.693
     roundness_threshold_high = 0.77
-    # Fallunterscheidung basierend auf den Roundness-Werten und HuMoments
 
     if roundness < roundness_threshold_low:
         return "Raute"
-
     elif roundness_threshold_low <= roundness < roundness_threshold_high:
-
         if -2.00600827e-09 > huMoments[5] > -3.71612183e-09:
             return "Raute"
         if huMoments[3] > 5.16398607e-07:
             return "Raute"
-
         elif 1.70038716e-07 < huMoments[3] < 4.25120757e-07:
             if huMoments[4] > 1.10003454e-14:
                 return "Rechteck"
             else:
                 return "Wellen"
-
         if 4.06948654e-08 < huMoments[3] < 4.25120757e-08:
             return "Rechteck"
         else:
@@ -103,22 +111,25 @@ def main(image_path):
     ]
 
     for i, (x, y, w, h, card) in enumerate(cards):
-        symbol_count = count_symbols(card)
+        symbol_count, symbol_areas = count_symbols(card)
         patterns, shapes, roundness = determine_pattern_and_shape(card)
+
+        white_pixel_count = np.sum(card == 255)
 
         print(f"Card {i + 1}:")
         print(f"    - Symbols: {symbol_count}")
+        print(f"    - Symbol Areas: {symbol_areas}")
+        print(f"    - White Pixels: {white_pixel_count}")
         for j, pattern in enumerate(patterns):
             shape = classify_shapes(shapes[j], roundness)
-            # print(f"   Symbol {j + 1}:")
-            # print(f"     - Pattern: {pattern}")
+            print(f"    - Pattern: {pattern}")
             print(f"    - Shape: {shape}")
         print()
 
         # Draw rectangle around card
-        cv2.rectangle(img, (x, y), (x + w, y + h), (fixed_colors_brg[i]), 2)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (fixed_colors_brg[i % len(fixed_colors_brg)]), 2)
 
-        text = f"Card {i + 1}"
+        text = f"C:{i + 1}, S: {symbol_count}"
         font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 0.6
         font_thickness = 2
@@ -133,4 +144,3 @@ def main(image_path):
 
 
 main('Utils/Set01.jpg')
-
