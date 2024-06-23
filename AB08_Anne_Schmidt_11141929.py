@@ -24,7 +24,7 @@ def calculate_average_color(image):  # berechnet den durchschnittlichen Farbwert
 
 def find_best_tile(target_avg, tile_avgs):  # Mit den durchschnittlichen Farbwerten von den tiles (Kacheln) und unserem Zielbild (Target) können die "passenden" tiles gesucht werden
 
-    min_dist = float('inf')  # min_dist wird auf unendlich gesetzt, um sicherzustellen, dass jede berechnete Distanz kleiner sein wird
+    min_dist = float("inf")  # min_dist wird auf unendlich gesetzt, um sicherzustellen, dass jede berechnete Distanz kleiner sein wird
     best_idx = -1  # best_idx wird auf -1 gesetzt, um anzuzeigen, dass noch kein Index gefunden wurde.
 
     for idx, avg in enumerate(tile_avgs):  # geht durch jede Kachel in der Liste tile_avgs. idx ist der Index der aktuellen Kachel, und avg ist der durchschnittliche Wert der Kachel
@@ -43,7 +43,7 @@ def create_mosaic(target_image_path, tile_images, tile_size):
     # Gittergröße berechnen, durch die Verhältnisse von Bildhöhe / Kachelhöhe = Anzahl der Kachel die auf die Bildhöhe passen
     # -> das gleiche für die Breite
     grid_size = (target_h // tile_size[0], target_w // tile_size[1])
-
+    total_summ_tiles = grid_size[0] * grid_size[1]
     # Zielbildgröße anpassen, damit es genau in das Gitter passt, da man sehr wahrscheinlich Kommazahlen raus bekommt und man möchte ja "ganze" Kacheln und keine reste
     resized_target_image = cv2.resize(target_image, (grid_size[1] * tile_size[1], grid_size[0] * tile_size[0]))
 
@@ -67,7 +67,7 @@ def create_mosaic(target_image_path, tile_images, tile_size):
             mosaic[i * tile_size[0]:(i + 1) * tile_size[0],
             j * tile_size[1]:(j + 1) * tile_size[1], :] = best_tile
 
-    return mosaic
+    return mosaic, total_summ_tiles
 
 
 # Beispielaufruf
@@ -79,7 +79,7 @@ tile_images = load_images_from_folder(tile_images_folder, tile_size)
 mosaic_image = create_mosaic(target_image_path, tile_images, tile_size)
 
 # Speichern des Mosaikbildes
-cv2.imwrite('mosaic_output.jpg', mosaic_image)
+cv2.imwrite("mosaic_output.jpg", mosaic_image[0])
 
 
 # Anzeigen der Bilder
@@ -88,14 +88,14 @@ plt.figure(figsize=(15, 8))
 # Eingabebild anzeigen
 plt.subplot(1, 2, 1)
 plt.imshow(cv2.cvtColor(cv2.imread(target_image_path), cv2.COLOR_BGR2RGB))
-plt.title('Eingabebild')
-plt.axis('off')
+plt.title("Eingabebild")
+plt.axis("off")
 
 # Mosaikbild anzeigen
 plt.subplot(1, 2, 2)
-plt.imshow(cv2.cvtColor(mosaic_image, cv2.COLOR_BGR2RGB))
-plt.title('Mosaikbild')
-plt.axis('off')
+plt.imshow(cv2.cvtColor(mosaic_image[0], cv2.COLOR_BGR2RGB))
+plt.title(f"Mosaikbild (Anzahl Kacheln: {mosaic_image[1]})")
+plt.axis("off")
 
 plt.tight_layout()
 plt.show()
