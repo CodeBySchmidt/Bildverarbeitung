@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from math import log10, copysign
 
 
 def find_cards(image_path):
@@ -37,11 +38,15 @@ def count_symbols(card):
     return symbol_count, symbol_areas
 
 
-def determine_pattern_and_shape(card):
+def determine_pattern(card):
+    # Find contours in the card image
     contours, _ = cv2.findContours(card, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     patterns = []
     shapes = []
     roundness = 0
+
+    if not contours:
+        return patterns, shapes, roundness
 
     for contour in contours:
         mask = np.zeros_like(card)
@@ -49,7 +54,6 @@ def determine_pattern_and_shape(card):
         filled_area = np.sum(mask == 255)
         contour_area = cv2.contourArea(contour)
         fill_rate = filled_area / contour_area if contour_area != 0 else 0
-        # print(fill_rate)
 
         # Calculate roundness
         perimeter = cv2.arcLength(contour, closed=True)
@@ -64,6 +68,10 @@ def determine_pattern_and_shape(card):
             patterns.append("filled")
 
         huMoments = cv2.HuMoments(cv2.moments(contour)).flatten()
+        # Log scale Hu moments
+        # huMoments = [-1 * copysign(1.0, m) * log10(abs(m)) if m != 0 else 0 for m in huMoments]
+        # print(f"roundness: {roundness}")
+        # print(f"huMoment: {huMoments}")
         shapes.append(huMoments)
 
     return patterns, shapes, roundness
@@ -112,7 +120,7 @@ def main(image_path):
 
     for i, (x, y, w, h, card) in enumerate(cards):
         symbol_count, symbol_areas = count_symbols(card)
-        patterns, shapes, roundness = determine_pattern_and_shape(card)
+        patterns, shapes, roundness = determine_pattern(card)
 
         white_pixel_count = np.sum(card == 255)
 
@@ -138,7 +146,9 @@ def main(image_path):
         text_y = y + (h + text_size[1]) + 2
         cv2.putText(img, text, (text_x, text_y), font, font_scale, (0, 0, 0), font_thickness)
 
-    cv2.imshow('Detected Cards', img)
+    img_detected = img
+    cv2.imshow('Detected Cards', img_detected)
+    cv2.imwrite("detected.jpg", img_detected)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
